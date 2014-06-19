@@ -13,9 +13,10 @@ Ah yes, the other important part - wiring up your stuff.  You will need:
 - A standard servo (3 wires)
 - A battery to power the servo (we used 4 AAs in a RC receiver battery box)
 
-Battery + -> Goes to Servo + (Red or Orange)
-Battery - -> Goes to Servo - (Black or Brown) and also Bean GND
-Bean Pin 3 -> Goes to Servo Singal (Yellow)
+Connections:
+- Battery + -> Goes to Servo + (Red or Orange)
+- Battery - -> Goes to Servo - (Black or Brown) and also Bean GND
+- Bean Pin 3 -> Goes to Servo Singal (Yellow)
 
 What is this LightBlue Bean?
 ----------------------------
