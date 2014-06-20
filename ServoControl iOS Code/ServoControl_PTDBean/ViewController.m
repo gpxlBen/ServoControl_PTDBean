@@ -59,22 +59,31 @@
 }
 
 - (void) sliderMoved:(UISlider *)sender {
-    float max = 127;
-    unsigned int sendData = floor(sender.value*max);
+    float max = 180;                                    // Max position of servo
+    unsigned int sendData = floor(sender.value*max);    // Convert slider value to servo rotation degrees
     
     if (self.bean) {
         NSMutableData *data = [NSMutableData dataWithBytes:&sendData length:sizeof(sendData)];
-        [self.bean setScratchNumber:1 withValue:data];
-        // Uncomment this line to get feedback from the bean, to make sure scratch data is OK
-//        [self.bean readScratchBank:1];
+        
+        // Cancel any pending data sends
+        [NSObject cancelPreviousPerformRequestsWithTarget:self];
+
+        // We send the data after 0.3 seconds to avoid the quick movement of the slider backing up send commands
+        [self performSelector:@selector(sendDataToBean:) withObject:data afterDelay:0.3];
     }
+}
+
+- (void) sendDataToBean:(NSMutableData *)sendData {
+    [self.bean setScratchNumber:1 withValue:sendData];
+    // Uncomment this line to get feedback from the bean, to make sure scratch data is OK
+//    [self.bean readScratchBank:1];
 }
 
 // check the delegate value
 -(void)bean:(PTDBean *)bean didUpdateScratchNumber:(NSNumber *)number withValue:(NSData *)data {
     unsigned int z;
     [data getBytes:&z length:sizeof(unsigned int)];
-    NSLog(@"Sc: %d", z);
+    NSLog(@"Bean Scratch is: %d", z);
 }
 
 // bean discovered
